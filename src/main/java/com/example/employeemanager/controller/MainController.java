@@ -1,56 +1,116 @@
 package com.example.employeemanager.controller;
 
 import com.example.employeemanager.MainApplication;
-import com.example.employeemanager.model.Income;
-import com.example.employeemanager.model.IncomeList;
-import com.example.employeemanager.model.Spent;
-import com.example.employeemanager.model.SpentList;
+import com.example.employeemanager.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 public class MainController {
+    public Label balance;
     @FXML
-    private TableView<Income> tableView; //Herencia
+    private TableView<MoneyManagement> tableView;
     @FXML
-    private TableColumn<Income, Integer> ingresos;
+    private TableColumn<MoneyManagement, Integer> typeColum;
     @FXML
-    private TableColumn<Spent, Integer> gastos;
+    private TableColumn<MoneyManagement, Integer> amountMoneyColum;
     @FXML
-    private TableColumn<Income, Integer> balance;
+    private TableColumn<MoneyManagement, String> descriptionColum;
     @FXML
-    private Button addButton;
-    @FXML
-    private Button editButton;
-    @FXML
-    private Button deleteButton;
+    private TableColumn<MoneyManagement, String> fechaColum;
+    private MoneyList moneyList;
+    private MoneyList tempMoneyList;
 
-    private IncomeList incomeList;
-    private SpentList spentList;
-
-    public void initialize(IncomeList incomeList, SpentList spentList) { //Hay que aplicar herencia una clase que una a Spent y Income
-        this.incomeList = incomeList; //Herencia
-        this.spentList = spentList; //Herencia
-
-        ingresos.setCellValueFactory(new PropertyValueFactory<>("amountOfMoney"));
-        gastos.setCellValueFactory(new PropertyValueFactory<>(""));
-        balance.setCellValueFactory(new PropertyValueFactory<>(""));
-
-        System.out.println(tableView);
-        tableView.setItems(
-                incomeList.getIncomes()
-        );
+    public void initialize(MoneyList moneyList) {
+        this.moneyList = moneyList;
+        this.tempMoneyList = new MoneyList();
+        tableView.setItems(tempMoneyList.getMoney());
     }
 
     public void onAddFinances(ActionEvent event) {
+        sortByDate();
         FXMLLoader loader = MainApplication.renderView("add-finace-view.fxml");
         AddFinanceController addFinanceController = loader.getController();
-        addFinanceController.setFinaceList(this.incomeList);//Herencia
-        editButton.setDisable(false);
+        addFinanceController.setMoneyList(this.moneyList);
+    }
+
+    public void onClickViewSpent(ActionEvent event){
+        balance.setText(calculateBalance());
+        sortByDate();
+        this.tempMoneyList = this.moneyList;
+        AddFinanceController controller = new AddFinanceController();
+        controller.setMoneyList(this.tempMoneyList);
+        this.tempMoneyList = controller.getMoneyListSpentOnly();
+        printTableView(this.tempMoneyList);
+        tableView.setVisible(true);
+    }
+
+    public void onClickViewIncome(ActionEvent event){
+        balance.setText(calculateBalance());
+        sortByDate();
+        this.tempMoneyList = this.moneyList;
+        AddFinanceController controller = new AddFinanceController();
+        controller.setMoneyList(this.tempMoneyList);
+        this.tempMoneyList = controller.getMoneyListIncomeOnly();
+        printTableView(this.tempMoneyList);
+        tableView.setVisible(true);
+    }
+
+    public void onClickViewBoth(ActionEvent event){
+        balance.setText(calculateBalance());
+        sortByDate();
+        this.tempMoneyList = moneyList;
+        printTableView(this.tempMoneyList);
+        tableView.setVisible(true);
+    }
+
+    public void printTableView(MoneyList moneyList){
+        this.fechaColum.setCellValueFactory(new PropertyValueFactory<>("date"));
+        typeColum.setCellValueFactory(new PropertyValueFactory<>("type"));
+        descriptionColum.setCellValueFactory(new PropertyValueFactory<>("description"));
+        amountMoneyColum.setCellValueFactory(new PropertyValueFactory<>("valor"));
+
+        this.tableView.setItems(null);
+        this.tableView.layout();
+        this.tableView.setItems(moneyList.getMoney());
+        System.out.println(tableView);
+    }
+
+    public void sortByDate(){
+        Collections.sort(this.moneyList.getMoney() , new Comparator<>() {
+            @Override
+            public int compare(MoneyManagement p1, MoneyManagement p2) {
+                if (p1.getDate().compareTo(p2.getDate()) > 0) {
+                    return -1;
+                } else if (p1.getDate().compareTo(p2.getDate()) < 0) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
+
+    public String calculateBalance(){
+        int totalSpent = 0;
+        int totalIncome= 0;
+        String balance;
+        for (MoneyManagement moneyManagement: this.moneyList.getMoney()) {
+            if(moneyManagement.getType()== 1){
+                totalSpent+= moneyManagement.getValor();
+            }else {
+                totalIncome+=moneyManagement.getValor();
+            }
+        }
+        balance = totalSpent-totalIncome + "";
+        return balance;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.example.employeemanager;
 
 import com.example.employeemanager.controller.MainController;
-import com.example.employeemanager.model.IncomeList;
+import com.example.employeemanager.model.MoneyList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,10 +14,10 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        IncomeList incomeList = new IncomeList();
+        MoneyList moneyList = new MoneyList();
         FXMLLoader loader =  renderView("main-view.fxml");
         MainController controller = loader.getController();
-        controller.initialize(incomeList);
+        controller.initialize(moneyList);
     }
 
     public static FXMLLoader renderView(String fxml){
@@ -29,7 +29,7 @@ public class MainApplication extends Application {
             );
 
             Parent parent = fxmlLoader.load();
-            Scene scene = new Scene(parent, 320, 240);
+            Scene scene = new Scene(parent, 400, 380);
             Stage stage = new Stage();
             stage.setTitle("Bank Finances App");
             stage.setScene(scene);

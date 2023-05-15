@@ -4,16 +4,20 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemanager.controller.MainController">
-    <TableView fx:id="tableView">
+    <TableView fx:id="tableView" prefHeight="400.0" prefWidth="484.0" style="-fx-background-color: #80DEEA;-fx-border-color: #000033;">
         <columns>
-            <TableColumn fx:id="ingresos" text="Ingresos" />
-            <TableColumn fx:id="gastos" text="Gastos" />
-         <TableColumn fx:id="balance" prefWidth="75.0" text="Balance" />
+            <TableColumn fx:id="amountMoneyColum" text="Monto" />
+            <TableColumn fx:id="typeColum" text="Tipo" />
+         <TableColumn fx:id="descriptionColum" prefWidth="75.0" text="Descripción" />
+         <TableColumn fx:id="fechaColum" prefWidth="75.0" text="Fecha" />
         </columns>
     </TableView>
+    <Label text="Balance: " />
+   <Label fx:id="balance" text="" />
     <HBox>
-        <Button fx:id="addButton" onAction="#onAddFinances" text="Add" />
-        <Button fx:id="editButton" disable="true" text="Edit" />
-        <Button fx:id="deleteButton" disable="true" text="Delete" />
+        <Button onAction="#onAddFinances" style="-fx-background-color: #C5E1A5;-fx-border-color: #000033;" text="Add" textFill="#000003" />
+        <Button onAction="#onClickViewIncome" style="-fx-background-color: #C5E1A5;-fx-border-color: #000033;" text="Incomes" />
+        <Button onAction="#onClickViewSpent" style="-fx-background-color: #C5E1A5;-fx-border-color: #000033;" text="Spents" />
+        <Button onAction="#onClickViewBoth" style="-fx-background-color: #C5E1A5;-fx-border-color: #000033;" text="Combined" />
     </HBox>
 </VBox>
