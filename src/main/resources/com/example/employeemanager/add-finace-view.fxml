@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemanager.controller.AddFinanceController">
+
+    <VBox layoutX="14.0" layoutY="14.0" prefHeight="190.0" prefWidth="315.0" spacing="10">
+        <Label text="Cantidad:" />
+        <TextField fx:id="amountMoneyTf"/>
+
+        <Label text="Descripción:" />
+        <TextField fx:id="descriptionTf" />
+      <HBox prefHeight="36.0" prefWidth="175.0">
+         <children>
+
+              <Button onAction="#onAddIncome" prefHeight="26.0" prefWidth="143.0" text="Agregar Ingreso" />
+            <Button onAction="#onAddSpent" mnemonicParsing="false" text="Agregar Gasto" />
+         </children>
+      </HBox>
+        <Button onAction="#onClose" text="Cerrar" />
+    </VBox>
+</AnchorPane>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemanager.controller.MainController">
+    <TableView fx:id="tableView">
+        <columns>
+            <TableColumn fx:id="ingresos" text="Ingresos" />
+            <TableColumn fx:id="gastos" text="Gastos" />
+         <TableColumn fx:id="balance" prefWidth="75.0" text="Balance" />
+        </columns>
+    </TableView>
+    <HBox>
+        <Button fx:id="addButton" onAction="#onAddFinances" text="Add" />
+        <Button fx:id="editButton" disable="true" text="Edit" />
+        <Button fx:id="deleteButton" disable="true" text="Delete" />
+    </HBox>
+</VBox>
